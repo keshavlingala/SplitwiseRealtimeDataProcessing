@@ -1,0 +1,21 @@
+api:
+  splitwise:
+    url: https://secure.splitwise.com/api/v3.0/
+    consumer-key: yOmq5FsGOjZNt84oSYhEQlPxHvYflqTM16V9UiNq
+    consumer-secret: U8mIzP64tYKA6Z4G8XL9X0XSaUY7oJ9XurOWaJd3
+    initial-access-token: ivxhUHSj700ByMiHhLflSu5kT8XnSel5lAMYjapH
+
+kafka:
+
+
+spring:
+  data:
+    cassandra:
+      keyspace-name: splitwise_analysis
+      contact-points: localhost
+      port: 9042
+  kafka:
+    consumer:
+      group-id: group-1
+      auto-offset-reset: earliest
+      bootstrap-servers: localhost:9092
