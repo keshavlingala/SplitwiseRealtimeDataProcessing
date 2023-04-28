@@ -3,6 +3,7 @@ package org.datbase.demo.controllers
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.datbase.demo.asJWTToken
 import org.datbase.demo.dto.UserApiKey
+import org.datbase.demo.jobs.SplitwiseJob
 import org.datbase.demo.retrofit.SplitwiseApi
 import org.datbase.demo.services.CassandraService
 import org.datbase.demo.services.MessagingService
@@ -17,7 +18,9 @@ import java.time.LocalDate
 class AddUserController(
 	val splitwiseApi: SplitwiseApi,
 	val cassandraService: CassandraService,
+	val messagingService: MessagingService,
 	val objectMapper: ObjectMapper,
+	val splitwiseJob: SplitwiseJob,
 ) {
 	@ExceptionHandler
 	fun handleException(e: Exception): ResponseEntity<Any> {
@@ -26,6 +29,14 @@ class AddUserController(
 
 	@GetMapping
 	fun index(): ResponseEntity<Any> {
+		return ResponseEntity.ok().body("Working!")
+	}
+
+	@PostMapping
+	fun postObject(
+		@RequestBody body: Any
+	): ResponseEntity<Any> {
+		messagingService.sendObj(body)
 		return ResponseEntity.ok().body("Working!")
 	}
 

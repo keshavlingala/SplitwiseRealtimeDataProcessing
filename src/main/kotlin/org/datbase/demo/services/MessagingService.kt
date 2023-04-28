@@ -1,7 +1,6 @@
 package org.datbase.demo.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
 
@@ -22,4 +21,13 @@ class MessagingService(
 		kafkaTemplate.send("monthly-expenses", objectMapper.writeValueAsString(obj))
 	}
 
+	fun ping(message: String) {
+		val msg = objectMapper.writeValueAsString(mapOf("message" to message))
+		kafkaTemplate.send("ping", msg)
+	}
+
+	fun sendObj(body: Any) {
+		println("Sending: $body")
+		kafkaTemplate.send("test", objectMapper.writeValueAsString(body))
+	}
 }

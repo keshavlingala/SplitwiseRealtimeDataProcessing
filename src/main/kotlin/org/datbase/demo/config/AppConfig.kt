@@ -45,7 +45,7 @@ class AppConfig(
 
 	@Bean
 	fun splitwiseApi(): SplitwiseApi {
-		val (url, consumerKey, consumerSecret, initialAccessToken) = apiProperties.splitwise
+		val (url, _, _, _) = apiProperties.splitwise
 		val interceptor = HttpLoggingInterceptor()
 		interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 		val client = OkHttpClient.Builder()
@@ -89,6 +89,14 @@ class AppConfig(
 	@Bean
 	fun ping(): NewTopic {
 		return TopicBuilder.name("ping")
+			.partitions(1)
+			.replicas(1)
+			.build()
+	}
+
+	@Bean
+	fun test(): NewTopic {
+		return TopicBuilder.name("test")
 			.partitions(1)
 			.replicas(1)
 			.build()
