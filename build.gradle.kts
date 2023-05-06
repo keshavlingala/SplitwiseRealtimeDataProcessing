@@ -36,6 +36,8 @@ dependencies {
 	// Kafka
 	implementation("org.springframework.kafka:spring-kafka")
 	implementation("org.apache.kafka:kafka-clients")
+	//	Asynchronoous
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
 	// Other
 	implementation("com.fasterxml.jackson.core:jackson-databind")
 	implementation("com.squareup.retrofit2:converter-jackson:2.9.0")

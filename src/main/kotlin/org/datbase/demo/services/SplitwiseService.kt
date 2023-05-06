@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service
 class SplitwiseService(
 	private val splitwiseApi: SplitwiseApi,
 ) {
+	// Creating a custom iterator to get all the expenses using the Splitwise API
 	fun getExpenses(apiKey: String): Iterator<Any> {
 		return object : Iterator<Any> {
 			val limit = 20

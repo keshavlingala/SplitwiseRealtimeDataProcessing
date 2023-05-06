@@ -72,16 +72,8 @@ class AppConfig(
 
 	@Bean
 	fun individualTopic(): NewTopic {
-		return TopicBuilder.name("individual-expenses")
+		return TopicBuilder.name("expenses")
 			.partitions(3)
-			.replicas(1)
-			.build()
-	}
-
-	@Bean
-	fun groupTopic(): NewTopic {
-		return TopicBuilder.name("group-expenses")
-			.partitions(1)
 			.replicas(1)
 			.build()
 	}

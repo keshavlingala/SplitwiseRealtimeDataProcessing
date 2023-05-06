@@ -1,5 +1,6 @@
 package org.datbase.demo.services
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
@@ -29,5 +30,9 @@ class MessagingService(
 	fun sendObj(body: Any) {
 		println("Sending: $body")
 		kafkaTemplate.send("test", objectMapper.writeValueAsString(body))
+	}
+
+	fun sendExpenseToKafka(expense: JsonNode?) {
+		kafkaTemplate.send("expenses", objectMapper.writeValueAsString(expense))
 	}
 }
