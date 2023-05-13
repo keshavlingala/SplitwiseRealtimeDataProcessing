@@ -19,8 +19,7 @@ class AddUserController(
 	val splitwiseApi: SplitwiseApi,
 	val cassandraService: CassandraService,
 	val messagingService: MessagingService,
-	val objectMapper: ObjectMapper,
-	val splitwiseJob: SplitwiseJob,
+	val objectMapper: ObjectMapper
 ) {
 	@ExceptionHandler
 	fun handleException(e: Exception): ResponseEntity<Any> {

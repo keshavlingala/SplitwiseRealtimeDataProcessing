@@ -18,25 +18,33 @@ class SplitwiseJob(
 	private val objectMapper: ObjectMapper,
 	private val splitwiseService: SplitwiseService,
 ) {
+	private var debug = false
 	//	86400000 milliseconds = 24 hours = 1 day Runs every day at 00:00:00
 	//	Runs in 10 seconds after the application starts
 	@Scheduled(fixedRate = 86400000L, initialDelay = 10000)
-	fun runEveryTwoMinutes() {
+	fun runEveryDay() {
 		val users = cassandraService.getAllUserApiKeys()
+		if(debug)
+			println("Got all users from cassandra ${users.size}")
 		users.multiAsync { user ->
 			println("Getting expenses for user ${user.user_id}")
 			val expenses = splitwiseService.getExpenses(user.api_key)
 			expenses.forEach { obj ->
-				//	For testing and debugging and demo purposes
-//				sleep(1000)
+				if (debug)
+					sleep(1000)
 				val expense = objectMapper.valueToTree<JsonNode>(obj)
 				val expenseObj = expense as ObjectNode
 				expenseObj.put("user_id", user.user_id)
 				expenseObj.put("user_name", user.name)
-//				println("Sending expense to kafka: ${expense.get("id")}")
+				if(debug)
+					println("Sending expense to kafka: ${expense.get("id")}")
 				messagingService.sendExpenseToKafka(expense)
 			}
 			println("Done getting expenses for user ${user.name}")
 		}
+	}
+
+	fun setDebug(debug: Boolean) {
+		this.debug = debug
 	}
 }

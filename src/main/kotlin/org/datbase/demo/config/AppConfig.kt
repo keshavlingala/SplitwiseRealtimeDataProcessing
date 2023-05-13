@@ -10,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.apache.kafka.clients.admin.NewTopic
 import org.datbase.demo.retrofit.SplitwiseApi
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.kafka.config.TopicBuilder
@@ -35,11 +36,15 @@ class AppConfig(
 	}
 
 	@Bean
-	fun session(): CqlSession1 {
+	fun session(
+		@Value("\${spring.data.cassandra.keyspace-name}") keyspaceName: String,
+		@Value("\${spring.data.cassandra.contact-points}") contactPoints: String,
+		@Value("\${spring.data.cassandra.port}") port: Int
+	): CqlSession1 {
 		return CqlSession1.builder()
-			.withKeyspace("splitwise_analysis")
+			.withKeyspace(keyspaceName)
 			.withLocalDatacenter("datacenter1")
-			.addContactPoint(InetSocketAddress("localhost", 9042))
+			.addContactPoint(InetSocketAddress(contactPoints, port))
 			.build()
 	}
 
