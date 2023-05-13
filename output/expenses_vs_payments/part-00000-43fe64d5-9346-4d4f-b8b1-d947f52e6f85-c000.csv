@@ -1,0 +1,20 @@
+month,year,user_name,payment,sum(cost)
+August,2022,Saurabh Kudeti,false,4056.1
+August,2022,Saurabh Kudeti,true,3365.6900000000005
+December,2022,Saurabh Kudeti,true,419.33000000000004
+December,2022,Saurabh Kudeti,false,897.6200000000001
+July,2022,Saurabh Kudeti,false,2850.8599999999997
+November,2022,Saurabh Kudeti,false,3632.12
+November,2022,Saurabh Kudeti,true,857.37
+October,2022,Saurabh Kudeti,true,816.8
+October,2022,Saurabh Kudeti,false,3352.08
+September,2022,Saurabh Kudeti,false,6031.61
+September,2022,Saurabh Kudeti,true,2015.3
+April,2023,Saurabh Kudeti,true,229.23
+April,2023,Saurabh Kudeti,false,407.52000000000004
+February,2023,Saurabh Kudeti,false,536.3
+February,2023,Saurabh Kudeti,true,249.76000000000002
+January,2023,Saurabh Kudeti,false,2034.82
+January,2023,Saurabh Kudeti,true,522.0899999999999
+March,2023,Saurabh Kudeti,true,791.89
+March,2023,Saurabh Kudeti,false,1146.15

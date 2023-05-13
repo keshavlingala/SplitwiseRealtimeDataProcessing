@@ -1,0 +1,87 @@
+version: '3'
+
+services:
+  cassandra:
+    image: cassandra:latest
+    ports:
+      - 9042:9042
+    networks:
+      - bigdata
+
+  cassandra-db-init:
+    image: cassandra:latest
+    volumes:
+      - ./init.cql:/init.cql
+    command: bash -c 'sleep 65 && cqlsh cassandra -f /init.cql'
+    depends_on:
+      - cassandra
+    networks:
+      - bigdata
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - 2181:2181
+    networks:
+      - bigdata
+
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    depends_on:
+      - zookeeper
+    networks:
+      - bigdata
+
+  jobscheduler:
+    image: jobscheduler:latest
+    environment:
+      API_SPLITWISE_URL: https://secure.splitwise.com/api/v3.0/
+      API_SPLITWISE_CONSUMER_KEY: <hidden>
+      API_SPLITWISE_CONSUMER_SECRET: <hidden>
+      API_SPLITWISE_INITIAL_ACCESS_TOKEN: <hidden>
+      SPRING_DATA_CASSANDRA_KEYSPACE_NAME: splitwise_analysis
+      SPRING_DATA_CASSANDRA_CONTACT_POINTS: cassandra
+      SPRING_DATA_CASSANDRA_PORT: 9042
+      SPRING_KAFKA_CONSUMER_GROUP_ID: group-1
+      SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET: earliest
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    ports:
+      - 8080:8080
+    depends_on:
+      - cassandra
+      - kafka
+    networks:
+      - bigdata
+
+  kafka-streaming-app:
+    image: kafka-streaming-app:latest
+    environment:
+      KAFKA_SERVERS: kafka:9092
+      KEYSPACE: splitwise_analysis
+      CASSANDRA_HOST: cassandra
+      KAFKA_TOPIC: expenses
+    networks:
+      - bigdata
+
+  spark-analysis:
+    image: spark-analysis:latest
+    environment:
+      SPARK_MASTER: spark://spark-master:7077
+      TOPIC_INPUT: input_topic
+      KEYSPACE: splitwise_analysis
+      TABLE: simplified_expenses
+      CASSANDRA_HOST: cassandra
+      CASSANDRA_PORT: 9042
+    depends_on:
+      - kafka
+    volumes:
+      - ./output:/app/output
+    networks:
+      - bigdata
+networks:
+  bigdata:
