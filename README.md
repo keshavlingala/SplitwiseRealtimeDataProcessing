@@ -44,14 +44,16 @@ the data in batch mode. The project is implemented using Kafka, Spark, Spring Bo
 docker build -t jobscheduler ./scheduler
 docker build -t spark-analysis ./sparkanalysis
 docker build -t kafka-streaming-app ./kafka-streaming-app
-``` 
+```
 This will build the docker images for the project.
 - Run the following command to start the project
+
 ```shell
 docker-compose up -d
 ```
 
 Docker Desktop should look like this
+
 ![Docker Desktop](DockerSS.png)
 
 - Wait for 60 seconds to let the cassandra and kafka to start
@@ -59,21 +61,27 @@ Docker Desktop should look like this
   database is not initialized, run init service again and wait for 60 seconds. ( only required for the first time )
 - After Cassandra service started and inited successfully, start jobscheduler service then
 - Use the below command to add a splitwise user to the system
+
 ```shell
 curl --location --request POST 'localhost:8080/add_user_key?key=<splitwise-api-key>' \
 --data ''
 ```
+
 > Splitwise api key can be generated [here](https://secure.splitwise.com/apps/new)
 - Start Kafka-streaming-app service and trigger scheduler application using the below command
+
 ```shell
 curl --location --request GET 'localhost:8080/job/splitwise'
 ```
+
 ![Trigger Scheduler manually](TriggerScheduler.png)
+
+
 - This will trigger the scheduler application to fetch the data from splitwise and push it to kafka
 - Kafka-streaming-app service will consume the data from kafka and process it and push it to cassandra
 - You can start the sparkanalysis service to get the reports generated in [output](./output) folder
 ![Add User Key](AddUser.png)
 - Spark Analysis service will stop automatically after reports are generated
+- Generated CSV can be interpreted directly using excel or any other tool and can be visualized using any visualization
+  tool like Tableau, Power BI, etc.
 
-
- 
