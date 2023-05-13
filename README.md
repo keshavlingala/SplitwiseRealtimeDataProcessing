@@ -34,7 +34,6 @@ the data in batch mode. The project is implemented using Kafka, Spark, Spring Bo
 
 ### Prerequisites
 - Docker
-- Postman
 
 ### Steps to run the project
 
